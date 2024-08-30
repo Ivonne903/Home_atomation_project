@@ -1,20 +1,24 @@
 #include <msp430g2553.h>
+#include <function.h>
 
 
 /**
  * main.c
  */
+
+
+
 void main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
-	P1DIR=0; // Direction Register 0b = Port configured as input, 1b = Port configured as output
-	P1DIR|=BIT6|BIT0;
-	P1REN=0; //Pullup or Pulldown Resistor Enable Register
-	P1REN|=BIT3;//P1.3 habilita resistencia
+	DefineInput_Opuput(&P1DIR,(unsigned char)BIT3,INPUT); // P1BIT1 configured as Input
+	DefineInput_Opuput(&P1DIR,(unsigned char)BIT6,OUPUT); // P1BIT6 configured as Input
+	DefineInput_Opuput(&P1DIR,(unsigned char)BIT0,OUPUT); // P1BIT1 configured as Input
+	Enable_Disable_Pulup_down_Resistors(&P1REN, (unsigned char)BIT3,ENABLE);// Enable Pullpudown Resistor for BIT3
 	P1SEL=0; //Function Selection Register
 	P1SEL2=0; //Function Selection Register  as I/0 port
-	P1OUT=0; //When I/O configured to input mode and pullups/pulldowns enabled:0b = Pulldown selected1b = Pullup selected
-	P1OUT|=BIT3|BIT0;
+	Configure_Pullup_Pulldown_Resistor(&P1OUT, (unsigned char)BIT3,UP);
+
 	while(1)
 	{
 
